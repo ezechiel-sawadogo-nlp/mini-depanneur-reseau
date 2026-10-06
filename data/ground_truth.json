@@ -1,0 +1,5 @@
+{
+  "SC01": {"domain": "transport", "element": "L1", "fault": "fiber_cut"},
+  "SC02": {"domain": "ran", "element": "C3", "fault": "config_error"},
+  "SC03": {"domain": "core", "element": "SMF", "fault": "overload"}
+}

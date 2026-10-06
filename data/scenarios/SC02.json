@@ -1,0 +1,22 @@
+{
+  "id": "SC02",
+  "ticket": "Depuis environ 09:40, des abonnés de la zone couverte par la cellule C3 se plaignent d'appels coupés et d'un débit faible.",
+  "alarms": [
+    {"time": "09:47:00", "domain": "ran", "element": "C3", "name": "HIGH_CALL_DROP_RATE", "severity": "minor"}
+  ],
+  "kpis": [
+    {"domain": "ran", "element": "C3", "name": "call_drop_rate_pct", "before": 0.8, "during": 6.5},
+    {"domain": "ran", "element": "C3", "name": "signal_quality_db", "before": 14.0, "during": 5.0},
+    {"domain": "ran", "element": "C1", "name": "call_drop_rate_pct", "before": 0.7, "during": 0.7},
+    {"domain": "transport", "element": "L2", "name": "packet_loss_pct", "before": 0.1, "during": 0.1},
+    {"domain": "transport", "element": "L2", "name": "latency_ms", "before": 8.0, "during": 8.0},
+    {"domain": "core", "element": "AMF", "name": "registration_success_pct", "before": 99.5, "during": 99.5}
+  ],
+  "config_changes": [
+    {"time": "09:32:00", "domain": "ran", "element": "C3", "description": "Inclinaison électrique de l'antenne modifiée de 4° à 12° (optimisation planifiée)."}
+  ],
+  "logs": [
+    {"time": "09:32:01", "domain": "ran", "element": "C3", "message": "configuration applied: electrical_tilt=12 (previous=4)"},
+    {"time": "09:41:00", "domain": "ran", "element": "C3", "message": "radio link failures increasing: 37 in last 5 min"}
+  ]
+}

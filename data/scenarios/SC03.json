@@ -1,0 +1,24 @@
+{
+  "id": "SC03",
+  "ticket": "Depuis 14:05, sur l'ensemble du réseau, de nombreux abonnés sont enregistrés sur le réseau mais n'arrivent pas à ouvrir de session de données (pas d'Internet).",
+  "alarms": [
+    {"time": "14:04:50", "domain": "core", "element": "SMF", "name": "CPU_OVERLOAD", "severity": "critical"},
+    {"time": "14:05:30", "domain": "core", "element": "SMF", "name": "SESSION_SETUP_FAILURE_HIGH", "severity": "major"}
+  ],
+  "kpis": [
+    {"domain": "core", "element": "SMF", "name": "cpu_load_pct", "before": 45.0, "during": 98.0},
+    {"domain": "core", "element": "SMF", "name": "session_setup_success_pct", "before": 99.2, "during": 61.0},
+    {"domain": "core", "element": "AMF", "name": "registration_success_pct", "before": 99.5, "during": 99.3},
+    {"domain": "ran", "element": "C1", "name": "active_data_sessions", "before": 120, "during": 71},
+    {"domain": "ran", "element": "C2", "name": "active_data_sessions", "before": 80, "during": 49},
+    {"domain": "ran", "element": "C3", "name": "active_data_sessions", "before": 95, "during": 58},
+    {"domain": "transport", "element": "L3", "name": "packet_loss_pct", "before": 0.1, "during": 0.1},
+    {"domain": "transport", "element": "L3", "name": "link_utilization_pct", "before": 55.0, "during": 34.0}
+  ],
+  "config_changes": [],
+  "logs": [
+    {"time": "14:04:48", "domain": "core", "element": "SMF", "message": "CPU load 98%, request queue full"},
+    {"time": "14:05:10", "domain": "core", "element": "SMF", "message": "rejecting PDU session establishment requests (congestion control active)"},
+    {"time": "14:05:30", "domain": "core", "element": "AMF", "message": "timeout waiting for SMF response on session creation"}
+  ]
+}

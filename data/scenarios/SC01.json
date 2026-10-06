@@ -1,0 +1,26 @@
+{
+  "id": "SC01",
+  "ticket": "Depuis 10:01, les abonnés de la zone du site S1 n'ont plus aucun service mobile.",
+  "alarms": [
+    {"time": "10:01:02", "domain": "transport", "element": "L1", "name": "LINK_DOWN", "severity": "critical"},
+    {"time": "10:01:05", "domain": "ran", "element": "S1", "name": "BACKHAUL_LOSS", "severity": "critical"},
+    {"time": "10:01:05", "domain": "ran", "element": "C1", "name": "CELL_OUT_OF_SERVICE", "severity": "major"},
+    {"time": "10:01:05", "domain": "ran", "element": "C2", "name": "CELL_OUT_OF_SERVICE", "severity": "major"},
+    {"time": "10:01:09", "domain": "core", "element": "AMF", "name": "GNB_UNREACHABLE", "severity": "major"}
+  ],
+  "kpis": [
+    {"domain": "transport", "element": "L1", "name": "packet_loss_pct", "before": 0.1, "during": 100.0},
+    {"domain": "transport", "element": "L2", "name": "packet_loss_pct", "before": 0.1, "during": 0.1},
+    {"domain": "ran", "element": "C1", "name": "connected_users", "before": 140, "during": 0},
+    {"domain": "ran", "element": "C2", "name": "connected_users", "before": 95, "during": 0},
+    {"domain": "ran", "element": "C3", "name": "connected_users", "before": 110, "during": 112},
+    {"domain": "core", "element": "AMF", "name": "registration_success_pct", "before": 99.5, "during": 99.4}
+  ],
+  "config_changes": [],
+  "logs": [
+    {"time": "10:01:01", "domain": "transport", "element": "R1", "message": "port P1 (L1): optical rx power -40.0 dBm, loss of signal"},
+    {"time": "10:01:02", "domain": "transport", "element": "R1", "message": "interface P1 (L1) state changed to DOWN"},
+    {"time": "10:01:05", "domain": "ran", "element": "S1", "message": "transport heartbeat timeout, no route to core"},
+    {"time": "10:01:09", "domain": "core", "element": "AMF", "message": "SCTP association with gNB S1 lost"}
+  ]
+}

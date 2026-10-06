@@ -1,0 +1,42 @@
+{
+  "_note": "Réseau fictif et simplifié, inventé pour ce projet. Il ne décrit aucun réseau réel.",
+  "domains": {
+    "ran": {
+      "S1": "site radio n°1",
+      "C1": "cellule du site S1",
+      "C2": "cellule du site S1",
+      "S2": "site radio n°2",
+      "C3": "cellule du site S2"
+    },
+    "transport": {
+      "L1": "lien fibre entre le site S1 et le routeur R1",
+      "L2": "lien faisceau hertzien entre le site S2 et le routeur R1",
+      "R1": "routeur d'agrégation",
+      "L3": "lien fibre entre le routeur R1 et le cœur de réseau"
+    },
+    "core": {
+      "AMF": "fonction d'enregistrement des abonnés",
+      "SMF": "fonction de gestion des sessions de données",
+      "UPF": "fonction d'acheminement des données vers Internet"
+    }
+  },
+  "depends_on": {
+    "C1": ["S1"],
+    "C2": ["S1"],
+    "C3": ["S2"],
+    "S1": ["L1"],
+    "S2": ["L2"],
+    "L1": ["R1"],
+    "L2": ["R1"],
+    "R1": ["L3"],
+    "L3": ["AMF", "SMF", "UPF"]
+  },
+  "fault_types": {
+    "fiber_cut": "coupure physique d'un lien fibre",
+    "link_congestion": "lien saturé par le trafic",
+    "hardware_failure": "panne matérielle d'un équipement",
+    "config_error": "mauvais paramètre appliqué lors d'un changement de configuration",
+    "overload": "fonction logicielle saturée (processeur, file d'attente)",
+    "interference": "brouillage radio sur une cellule"
+  }
+}
