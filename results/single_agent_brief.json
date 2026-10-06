@@ -1,0 +1,277 @@
+{
+  "model": "qwen2.5:7b",
+  "prompt": "brief",
+  "repeats": 3,
+  "records": [
+    {
+      "scenario": "SC01",
+      "repeat": 1,
+      "expected": {
+        "domain": "transport",
+        "element": "L1",
+        "fault": "fiber_cut"
+      },
+      "diagnosis": {
+        "domain": "ran",
+        "element": "S1",
+        "fault": "fiber_cut"
+      },
+      "turns": 5,
+      "tool_calls": 4,
+      "tool_errors": 0,
+      "hit_turn_limit": false,
+      "model_calls": 6,
+      "prompt_tokens": 7165,
+      "output_tokens": 153,
+      "prompt_seconds": 38.1,
+      "output_seconds": 38.0,
+      "score": {
+        "domain": false,
+        "element": false,
+        "fault": true,
+        "exact": false
+      },
+      "seconds": 87.3
+    },
+    {
+      "scenario": "SC02",
+      "repeat": 1,
+      "expected": {
+        "domain": "ran",
+        "element": "C3",
+        "fault": "config_error"
+      },
+      "diagnosis": {
+        "domain": "ran",
+        "element": "C3",
+        "fault": "interference"
+      },
+      "turns": 5,
+      "tool_calls": 4,
+      "tool_errors": 0,
+      "hit_turn_limit": false,
+      "model_calls": 6,
+      "prompt_tokens": 7336,
+      "output_tokens": 230,
+      "prompt_seconds": 17.1,
+      "output_seconds": 57.4,
+      "score": {
+        "domain": true,
+        "element": true,
+        "fault": false,
+        "exact": false
+      },
+      "seconds": 74.5
+    },
+    {
+      "scenario": "SC03",
+      "repeat": 1,
+      "expected": {
+        "domain": "core",
+        "element": "SMF",
+        "fault": "overload"
+      },
+      "diagnosis": {
+        "domain": "core",
+        "element": "SMF",
+        "fault": "overload"
+      },
+      "turns": 5,
+      "tool_calls": 4,
+      "tool_errors": 0,
+      "hit_turn_limit": false,
+      "model_calls": 6,
+      "prompt_tokens": 7423,
+      "output_tokens": 195,
+      "prompt_seconds": 18.0,
+      "output_seconds": 47.2,
+      "score": {
+        "domain": true,
+        "element": true,
+        "fault": true,
+        "exact": true
+      },
+      "seconds": 65.2
+    },
+    {
+      "scenario": "SC01",
+      "repeat": 2,
+      "expected": {
+        "domain": "transport",
+        "element": "L1",
+        "fault": "fiber_cut"
+      },
+      "diagnosis": {
+        "domain": "ran",
+        "element": "S1",
+        "fault": "fiber_cut"
+      },
+      "turns": 5,
+      "tool_calls": 4,
+      "tool_errors": 0,
+      "hit_turn_limit": false,
+      "model_calls": 6,
+      "prompt_tokens": 7165,
+      "output_tokens": 154,
+      "prompt_seconds": 15.8,
+      "output_seconds": 36.4,
+      "score": {
+        "domain": false,
+        "element": false,
+        "fault": true,
+        "exact": false
+      },
+      "seconds": 52.5
+    },
+    {
+      "scenario": "SC02",
+      "repeat": 2,
+      "expected": {
+        "domain": "ran",
+        "element": "C3",
+        "fault": "config_error"
+      },
+      "diagnosis": {
+        "domain": "ran",
+        "element": "C3",
+        "fault": "interference"
+      },
+      "turns": 5,
+      "tool_calls": 4,
+      "tool_errors": 0,
+      "hit_turn_limit": false,
+      "model_calls": 6,
+      "prompt_tokens": 7336,
+      "output_tokens": 230,
+      "prompt_seconds": 17.8,
+      "output_seconds": 55.4,
+      "score": {
+        "domain": true,
+        "element": true,
+        "fault": false,
+        "exact": false
+      },
+      "seconds": 73.5
+    },
+    {
+      "scenario": "SC03",
+      "repeat": 2,
+      "expected": {
+        "domain": "core",
+        "element": "SMF",
+        "fault": "overload"
+      },
+      "diagnosis": {
+        "domain": "core",
+        "element": "SMF",
+        "fault": "overload"
+      },
+      "turns": 5,
+      "tool_calls": 4,
+      "tool_errors": 0,
+      "hit_turn_limit": false,
+      "model_calls": 6,
+      "prompt_tokens": 7423,
+      "output_tokens": 195,
+      "prompt_seconds": 17.2,
+      "output_seconds": 47.7,
+      "score": {
+        "domain": true,
+        "element": true,
+        "fault": true,
+        "exact": true
+      },
+      "seconds": 65.0
+    },
+    {
+      "scenario": "SC01",
+      "repeat": 3,
+      "expected": {
+        "domain": "transport",
+        "element": "L1",
+        "fault": "fiber_cut"
+      },
+      "diagnosis": {
+        "domain": "ran",
+        "element": "S1",
+        "fault": "fiber_cut"
+      },
+      "turns": 5,
+      "tool_calls": 4,
+      "tool_errors": 0,
+      "hit_turn_limit": false,
+      "model_calls": 6,
+      "prompt_tokens": 7165,
+      "output_tokens": 154,
+      "prompt_seconds": 15.0,
+      "output_seconds": 36.4,
+      "score": {
+        "domain": false,
+        "element": false,
+        "fault": true,
+        "exact": false
+      },
+      "seconds": 51.6
+    },
+    {
+      "scenario": "SC02",
+      "repeat": 3,
+      "expected": {
+        "domain": "ran",
+        "element": "C3",
+        "fault": "config_error"
+      },
+      "diagnosis": {
+        "domain": "ran",
+        "element": "C3",
+        "fault": "interference"
+      },
+      "turns": 5,
+      "tool_calls": 4,
+      "tool_errors": 0,
+      "hit_turn_limit": false,
+      "model_calls": 6,
+      "prompt_tokens": 7336,
+      "output_tokens": 230,
+      "prompt_seconds": 17.4,
+      "output_seconds": 55.5,
+      "score": {
+        "domain": true,
+        "element": true,
+        "fault": false,
+        "exact": false
+      },
+      "seconds": 72.9
+    },
+    {
+      "scenario": "SC03",
+      "repeat": 3,
+      "expected": {
+        "domain": "core",
+        "element": "SMF",
+        "fault": "overload"
+      },
+      "diagnosis": {
+        "domain": "core",
+        "element": "SMF",
+        "fault": "overload"
+      },
+      "turns": 5,
+      "tool_calls": 4,
+      "tool_errors": 0,
+      "hit_turn_limit": false,
+      "model_calls": 6,
+      "prompt_tokens": 7423,
+      "output_tokens": 195,
+      "prompt_seconds": 17.4,
+      "output_seconds": 46.8,
+      "score": {
+        "domain": true,
+        "element": true,
+        "fault": true,
+        "exact": true
+      },
+      "seconds": 64.3
+    }
+  ]
+}
