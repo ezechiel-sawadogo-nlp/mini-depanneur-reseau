@@ -1,0 +1,251 @@
+{
+  "id": "SC13",
+  "ticket": "Depuis 17:36, sur l'ensemble du réseau, de nombreux abonnés sont enregistrés mais n'arrivent pas à ouvrir de session de données.",
+  "alarms": [
+    {
+      "time": "16:52:57",
+      "domain": "transport",
+      "element": "R1",
+      "name": "FAN_SPEED_WARNING",
+      "severity": "minor"
+    },
+    {
+      "time": "17:36:30",
+      "domain": "core",
+      "element": "SMF",
+      "name": "SESSION_SETUP_FAILURE_HIGH",
+      "severity": "major"
+    }
+  ],
+  "kpis": [
+    {
+      "domain": "ran",
+      "element": "C1",
+      "name": "connected_users",
+      "before": 140,
+      "during": 140
+    },
+    {
+      "domain": "ran",
+      "element": "C1",
+      "name": "data_throughput_mbps",
+      "before": 42.0,
+      "during": 25.2
+    },
+    {
+      "domain": "ran",
+      "element": "C1",
+      "name": "call_drop_rate_pct",
+      "before": 0.8,
+      "during": 0.8
+    },
+    {
+      "domain": "ran",
+      "element": "C1",
+      "name": "signal_quality_db",
+      "before": 14.0,
+      "during": 14.0
+    },
+    {
+      "domain": "ran",
+      "element": "C2",
+      "name": "connected_users",
+      "before": 95,
+      "during": 95
+    },
+    {
+      "domain": "ran",
+      "element": "C2",
+      "name": "data_throughput_mbps",
+      "before": 35.0,
+      "during": 21.0
+    },
+    {
+      "domain": "ran",
+      "element": "C2",
+      "name": "call_drop_rate_pct",
+      "before": 0.7,
+      "during": 0.7
+    },
+    {
+      "domain": "ran",
+      "element": "C2",
+      "name": "signal_quality_db",
+      "before": 13.0,
+      "during": 13.0
+    },
+    {
+      "domain": "ran",
+      "element": "C3",
+      "name": "connected_users",
+      "before": 110,
+      "during": 110
+    },
+    {
+      "domain": "ran",
+      "element": "C3",
+      "name": "data_throughput_mbps",
+      "before": 38.0,
+      "during": 22.8
+    },
+    {
+      "domain": "ran",
+      "element": "C3",
+      "name": "call_drop_rate_pct",
+      "before": 0.8,
+      "during": 0.8
+    },
+    {
+      "domain": "ran",
+      "element": "C3",
+      "name": "signal_quality_db",
+      "before": 14.0,
+      "during": 14.0
+    },
+    {
+      "domain": "transport",
+      "element": "L1",
+      "name": "packet_loss_pct",
+      "before": 0.1,
+      "during": 0.1
+    },
+    {
+      "domain": "transport",
+      "element": "L1",
+      "name": "link_utilization_pct",
+      "before": 48.0,
+      "during": 28.8
+    },
+    {
+      "domain": "transport",
+      "element": "L1",
+      "name": "latency_ms",
+      "before": 6.0,
+      "during": 6.0
+    },
+    {
+      "domain": "transport",
+      "element": "L2",
+      "name": "packet_loss_pct",
+      "before": 0.1,
+      "during": 0.1
+    },
+    {
+      "domain": "transport",
+      "element": "L2",
+      "name": "link_utilization_pct",
+      "before": 41.0,
+      "during": 24.6
+    },
+    {
+      "domain": "transport",
+      "element": "L2",
+      "name": "latency_ms",
+      "before": 8.0,
+      "during": 8.0
+    },
+    {
+      "domain": "transport",
+      "element": "L3",
+      "name": "packet_loss_pct",
+      "before": 0.1,
+      "during": 0.1
+    },
+    {
+      "domain": "transport",
+      "element": "L3",
+      "name": "link_utilization_pct",
+      "before": 55.0,
+      "during": 33.0
+    },
+    {
+      "domain": "transport",
+      "element": "L3",
+      "name": "latency_ms",
+      "before": 4.0,
+      "during": 4.0
+    },
+    {
+      "domain": "core",
+      "element": "AMF",
+      "name": "registration_success_pct",
+      "before": 99.5,
+      "during": 99.5
+    },
+    {
+      "domain": "core",
+      "element": "AMF",
+      "name": "cpu_load_pct",
+      "before": 50.0,
+      "during": 50.0
+    },
+    {
+      "domain": "core",
+      "element": "SMF",
+      "name": "session_setup_success_pct",
+      "before": 99.2,
+      "during": 58.0
+    },
+    {
+      "domain": "core",
+      "element": "SMF",
+      "name": "cpu_load_pct",
+      "before": 45.0,
+      "during": 45.0
+    },
+    {
+      "domain": "core",
+      "element": "UPF",
+      "name": "packet_drop_pct",
+      "before": 0.1,
+      "during": 0.1
+    },
+    {
+      "domain": "core",
+      "element": "UPF",
+      "name": "cpu_load_pct",
+      "before": 40.0,
+      "during": 40.0
+    }
+  ],
+  "config_changes": [
+    {
+      "time": "15:12:48",
+      "domain": "core",
+      "element": "AMF",
+      "description": "Niveau de journalisation passé de INFO à WARNING."
+    },
+    {
+      "time": "17:34:00",
+      "domain": "core",
+      "element": "SMF",
+      "description": "Taille du pool d'adresses IP des abonnés réduite de 65000 à 2000 (changement planifié)."
+    }
+  ],
+  "logs": [
+    {
+      "time": "15:12:49",
+      "domain": "core",
+      "element": "AMF",
+      "message": "configuration applied: log_level=WARNING (previous=INFO)"
+    },
+    {
+      "time": "16:52:57",
+      "domain": "transport",
+      "element": "R1",
+      "message": "fan tray 2 speed above nominal"
+    },
+    {
+      "time": "17:34:01",
+      "domain": "core",
+      "element": "SMF",
+      "message": "configuration applied: ue_ip_pool_size=2000 (previous=65000)"
+    },
+    {
+      "time": "17:36:00",
+      "domain": "core",
+      "element": "SMF",
+      "message": "PDU session rejected: no IP address available in pool"
+    }
+  ]
+}

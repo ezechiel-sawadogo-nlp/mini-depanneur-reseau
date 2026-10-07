@@ -1,0 +1,158 @@
+{
+  "model": "qwen2.5:7b",
+  "prompt": "verbose",
+  "split": "dev",
+  "repeats": 1,
+  "records": [
+    {
+      "scenario": "SC01",
+      "repeat": 1,
+      "expected": {
+        "domain": "transport",
+        "element": "L1",
+        "fault": "fiber_cut"
+      },
+      "diagnosis": {
+        "domain": "transport",
+        "element": "L1",
+        "fault": "fiber_cut"
+      },
+      "turns": 3,
+      "tool_calls": 2,
+      "tool_errors": 0,
+      "hit_turn_limit": false,
+      "model_calls": 4,
+      "prompt_tokens": 5606,
+      "output_tokens": 706,
+      "prompt_seconds": 52.1,
+      "output_seconds": 180.9,
+      "score": {
+        "domain": true,
+        "element": true,
+        "fault": true,
+        "exact": true
+      },
+      "seconds": 246.2
+    },
+    {
+      "scenario": "SC02",
+      "repeat": 1,
+      "expected": {
+        "domain": "ran",
+        "element": "C3",
+        "fault": "config_error"
+      },
+      "diagnosis": {
+        "domain": "ran",
+        "element": "C3",
+        "fault": "hardware_failure"
+      },
+      "turns": 4,
+      "tool_calls": 3,
+      "tool_errors": 0,
+      "hit_turn_limit": false,
+      "model_calls": 5,
+      "prompt_tokens": 7713,
+      "output_tokens": 920,
+      "prompt_seconds": 28.7,
+      "output_seconds": 453.7,
+      "score": {
+        "domain": true,
+        "element": true,
+        "fault": false,
+        "exact": false
+      },
+      "seconds": 483.4
+    },
+    {
+      "scenario": "SC03",
+      "repeat": 1,
+      "expected": {
+        "domain": "core",
+        "element": "SMF",
+        "fault": "overload"
+      },
+      "diagnosis": {
+        "domain": "core",
+        "element": "SMF",
+        "fault": "overload"
+      },
+      "turns": 2,
+      "tool_calls": 1,
+      "tool_errors": 0,
+      "hit_turn_limit": false,
+      "model_calls": 3,
+      "prompt_tokens": 3617,
+      "output_tokens": 443,
+      "prompt_seconds": 14.7,
+      "output_seconds": 110.0,
+      "score": {
+        "domain": true,
+        "element": true,
+        "fault": true,
+        "exact": true
+      },
+      "seconds": 124.9
+    },
+    {
+      "scenario": "SC04",
+      "repeat": 1,
+      "expected": {
+        "domain": "ran",
+        "element": "S1",
+        "fault": "hardware_failure"
+      },
+      "diagnosis": {
+        "domain": "ran",
+        "element": "S1",
+        "fault": "hardware_failure"
+      },
+      "turns": 2,
+      "tool_calls": 1,
+      "tool_errors": 0,
+      "hit_turn_limit": false,
+      "model_calls": 3,
+      "prompt_tokens": 3501,
+      "output_tokens": 319,
+      "prompt_seconds": 15.5,
+      "output_seconds": 629.0,
+      "score": {
+        "domain": true,
+        "element": true,
+        "fault": true,
+        "exact": true
+      },
+      "seconds": 644.7
+    },
+    {
+      "scenario": "SC05",
+      "repeat": 1,
+      "expected": {
+        "domain": "transport",
+        "element": "L2",
+        "fault": "link_congestion"
+      },
+      "diagnosis": {
+        "domain": "ran",
+        "element": "C3",
+        "fault": "config_error"
+      },
+      "turns": 4,
+      "tool_calls": 3,
+      "tool_errors": 0,
+      "hit_turn_limit": false,
+      "model_calls": 5,
+      "prompt_tokens": 7844,
+      "output_tokens": 1173,
+      "prompt_seconds": 29.0,
+      "output_seconds": 389.6,
+      "score": {
+        "domain": false,
+        "element": false,
+        "fault": false,
+        "exact": false
+      },
+      "seconds": 419.0
+    }
+  ]
+}

@@ -1,0 +1,305 @@
+{
+  "id": "SC06",
+  "ticket": "Depuis 08:15, sur l'ensemble du réseau, les abonnés n'ont plus aucun service mobile.",
+  "alarms": [
+    {
+      "time": "07:38:01",
+      "domain": "core",
+      "element": "UPF",
+      "name": "LICENSE_USAGE_WARNING",
+      "severity": "minor"
+    },
+    {
+      "time": "08:15:30",
+      "domain": "transport",
+      "element": "L3",
+      "name": "LINK_DOWN",
+      "severity": "critical"
+    },
+    {
+      "time": "08:15:33",
+      "domain": "ran",
+      "element": "S1",
+      "name": "BACKHAUL_LOSS",
+      "severity": "critical"
+    },
+    {
+      "time": "08:15:33",
+      "domain": "ran",
+      "element": "C1",
+      "name": "CELL_OUT_OF_SERVICE",
+      "severity": "major"
+    },
+    {
+      "time": "08:15:33",
+      "domain": "ran",
+      "element": "C2",
+      "name": "CELL_OUT_OF_SERVICE",
+      "severity": "major"
+    },
+    {
+      "time": "08:15:33",
+      "domain": "ran",
+      "element": "S2",
+      "name": "BACKHAUL_LOSS",
+      "severity": "critical"
+    },
+    {
+      "time": "08:15:33",
+      "domain": "ran",
+      "element": "C3",
+      "name": "CELL_OUT_OF_SERVICE",
+      "severity": "major"
+    },
+    {
+      "time": "08:15:37",
+      "domain": "core",
+      "element": "AMF",
+      "name": "GNB_UNREACHABLE",
+      "severity": "major"
+    },
+    {
+      "time": "08:15:37",
+      "domain": "core",
+      "element": "AMF",
+      "name": "GNB_UNREACHABLE",
+      "severity": "major"
+    }
+  ],
+  "kpis": [
+    {
+      "domain": "ran",
+      "element": "C1",
+      "name": "connected_users",
+      "before": 140,
+      "during": 0
+    },
+    {
+      "domain": "ran",
+      "element": "C1",
+      "name": "data_throughput_mbps",
+      "before": 42.0,
+      "during": 0.0
+    },
+    {
+      "domain": "ran",
+      "element": "C1",
+      "name": "call_drop_rate_pct",
+      "before": 0.8,
+      "during": 0.0
+    },
+    {
+      "domain": "ran",
+      "element": "C1",
+      "name": "signal_quality_db",
+      "before": 14.0,
+      "during": 14.0
+    },
+    {
+      "domain": "ran",
+      "element": "C2",
+      "name": "connected_users",
+      "before": 95,
+      "during": 0
+    },
+    {
+      "domain": "ran",
+      "element": "C2",
+      "name": "data_throughput_mbps",
+      "before": 35.0,
+      "during": 0.0
+    },
+    {
+      "domain": "ran",
+      "element": "C2",
+      "name": "call_drop_rate_pct",
+      "before": 0.7,
+      "during": 0.0
+    },
+    {
+      "domain": "ran",
+      "element": "C2",
+      "name": "signal_quality_db",
+      "before": 13.0,
+      "during": 13.0
+    },
+    {
+      "domain": "ran",
+      "element": "C3",
+      "name": "connected_users",
+      "before": 110,
+      "during": 0
+    },
+    {
+      "domain": "ran",
+      "element": "C3",
+      "name": "data_throughput_mbps",
+      "before": 38.0,
+      "during": 0.0
+    },
+    {
+      "domain": "ran",
+      "element": "C3",
+      "name": "call_drop_rate_pct",
+      "before": 0.8,
+      "during": 0.0
+    },
+    {
+      "domain": "ran",
+      "element": "C3",
+      "name": "signal_quality_db",
+      "before": 14.0,
+      "during": 14.0
+    },
+    {
+      "domain": "transport",
+      "element": "L1",
+      "name": "packet_loss_pct",
+      "before": 0.1,
+      "during": 0.1
+    },
+    {
+      "domain": "transport",
+      "element": "L1",
+      "name": "link_utilization_pct",
+      "before": 48.0,
+      "during": 0.0
+    },
+    {
+      "domain": "transport",
+      "element": "L1",
+      "name": "latency_ms",
+      "before": 6.0,
+      "during": 6.0
+    },
+    {
+      "domain": "transport",
+      "element": "L2",
+      "name": "packet_loss_pct",
+      "before": 0.1,
+      "during": 0.1
+    },
+    {
+      "domain": "transport",
+      "element": "L2",
+      "name": "link_utilization_pct",
+      "before": 41.0,
+      "during": 0.0
+    },
+    {
+      "domain": "transport",
+      "element": "L2",
+      "name": "latency_ms",
+      "before": 8.0,
+      "during": 8.0
+    },
+    {
+      "domain": "transport",
+      "element": "L3",
+      "name": "packet_loss_pct",
+      "before": 0.1,
+      "during": 100.0
+    },
+    {
+      "domain": "transport",
+      "element": "L3",
+      "name": "link_utilization_pct",
+      "before": 55.0,
+      "during": 0.0
+    },
+    {
+      "domain": "transport",
+      "element": "L3",
+      "name": "latency_ms",
+      "before": 4.0,
+      "during": 4.0
+    },
+    {
+      "domain": "core",
+      "element": "AMF",
+      "name": "registration_success_pct",
+      "before": 99.5,
+      "during": 99.5
+    },
+    {
+      "domain": "core",
+      "element": "AMF",
+      "name": "cpu_load_pct",
+      "before": 50.0,
+      "during": 50.0
+    },
+    {
+      "domain": "core",
+      "element": "SMF",
+      "name": "session_setup_success_pct",
+      "before": 99.2,
+      "during": 99.2
+    },
+    {
+      "domain": "core",
+      "element": "SMF",
+      "name": "cpu_load_pct",
+      "before": 45.0,
+      "during": 45.0
+    },
+    {
+      "domain": "core",
+      "element": "UPF",
+      "name": "packet_drop_pct",
+      "before": 0.1,
+      "during": 0.1
+    },
+    {
+      "domain": "core",
+      "element": "UPF",
+      "name": "cpu_load_pct",
+      "before": 40.0,
+      "during": 40.0
+    }
+  ],
+  "config_changes": [],
+  "logs": [
+    {
+      "time": "07:38:01",
+      "domain": "core",
+      "element": "UPF",
+      "message": "license usage at 82% of capacity"
+    },
+    {
+      "time": "08:15:29",
+      "domain": "transport",
+      "element": "R1",
+      "message": "port P3 (L3): optical rx power -40.0 dBm, loss of signal"
+    },
+    {
+      "time": "08:15:30",
+      "domain": "transport",
+      "element": "R1",
+      "message": "interface P3 (L3) state changed to DOWN"
+    },
+    {
+      "time": "08:15:33",
+      "domain": "ran",
+      "element": "S1",
+      "message": "transport heartbeat timeout, no route to core"
+    },
+    {
+      "time": "08:15:33",
+      "domain": "ran",
+      "element": "S2",
+      "message": "transport heartbeat timeout, no route to core"
+    },
+    {
+      "time": "08:15:37",
+      "domain": "core",
+      "element": "AMF",
+      "message": "SCTP association with gNB S1 lost"
+    },
+    {
+      "time": "08:15:37",
+      "domain": "core",
+      "element": "AMF",
+      "message": "SCTP association with gNB S2 lost"
+    }
+  ]
+}

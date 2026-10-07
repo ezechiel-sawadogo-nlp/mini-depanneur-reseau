@@ -215,8 +215,17 @@ def diagnose(scenario: dict, chat=ollama.chat, brief: bool = False) -> dict:
     """Lance l'agent sur un scénario et résume ce qui s'est passé."""
     final = build_agent(scenario, chat=chat).invoke(initial_state(scenario, brief))
     tool_messages = [m for m in final["messages"] if m["role"] == "tool"]
+    assistant_messages = [m for m in final["messages"] if m["role"] == "assistant"]
     return {
         "diagnosis": final["diagnosis"],
+        # ce que l'agent a consulté, dans l'ordre, sous la forme "alarms:ran"
+        "consulted": [
+            f"{call['function']['name'].removeprefix('get_')}:{call['function']['arguments'].get('domain', '?')}"
+            for m in assistant_messages
+            for call in m.get("tool_calls") or []
+        ],
+        # ce que l'agent a écrit : indispensable pour comprendre une erreur après coup
+        "reasoning": [m["content"] for m in assistant_messages if m.get("content")],
         "turns": final["turns"],
         "tool_calls": len(tool_messages),
         "tool_errors": sum(m["content"].startswith("ERREUR") for m in tool_messages),

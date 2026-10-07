@@ -1,0 +1,260 @@
+{
+  "id": "SC07",
+  "ticket": "Depuis 16:45 environ, sur l'ensemble du réseau, les abonnés se plaignent d'un débit très faible.",
+  "alarms": [
+    {
+      "time": "16:08:08",
+      "domain": "core",
+      "element": "AMF",
+      "name": "CERTIFICATE_EXPIRY_WARNING",
+      "severity": "minor"
+    },
+    {
+      "time": "16:45:10",
+      "domain": "transport",
+      "element": "L3",
+      "name": "HIGH_UTILIZATION",
+      "severity": "major"
+    },
+    {
+      "time": "16:49:10",
+      "domain": "ran",
+      "element": "C1",
+      "name": "LOW_THROUGHPUT",
+      "severity": "minor"
+    },
+    {
+      "time": "16:49:10",
+      "domain": "ran",
+      "element": "C2",
+      "name": "LOW_THROUGHPUT",
+      "severity": "minor"
+    },
+    {
+      "time": "16:49:10",
+      "domain": "ran",
+      "element": "C3",
+      "name": "LOW_THROUGHPUT",
+      "severity": "minor"
+    }
+  ],
+  "kpis": [
+    {
+      "domain": "ran",
+      "element": "C1",
+      "name": "connected_users",
+      "before": 140,
+      "during": 140
+    },
+    {
+      "domain": "ran",
+      "element": "C1",
+      "name": "data_throughput_mbps",
+      "before": 42.0,
+      "during": 9.2
+    },
+    {
+      "domain": "ran",
+      "element": "C1",
+      "name": "call_drop_rate_pct",
+      "before": 0.8,
+      "during": 0.8
+    },
+    {
+      "domain": "ran",
+      "element": "C1",
+      "name": "signal_quality_db",
+      "before": 14.0,
+      "during": 14.0
+    },
+    {
+      "domain": "ran",
+      "element": "C2",
+      "name": "connected_users",
+      "before": 95,
+      "during": 95
+    },
+    {
+      "domain": "ran",
+      "element": "C2",
+      "name": "data_throughput_mbps",
+      "before": 35.0,
+      "during": 7.7
+    },
+    {
+      "domain": "ran",
+      "element": "C2",
+      "name": "call_drop_rate_pct",
+      "before": 0.7,
+      "during": 0.7
+    },
+    {
+      "domain": "ran",
+      "element": "C2",
+      "name": "signal_quality_db",
+      "before": 13.0,
+      "during": 13.0
+    },
+    {
+      "domain": "ran",
+      "element": "C3",
+      "name": "connected_users",
+      "before": 110,
+      "during": 110
+    },
+    {
+      "domain": "ran",
+      "element": "C3",
+      "name": "data_throughput_mbps",
+      "before": 38.0,
+      "during": 8.4
+    },
+    {
+      "domain": "ran",
+      "element": "C3",
+      "name": "call_drop_rate_pct",
+      "before": 0.8,
+      "during": 0.8
+    },
+    {
+      "domain": "ran",
+      "element": "C3",
+      "name": "signal_quality_db",
+      "before": 14.0,
+      "during": 14.0
+    },
+    {
+      "domain": "transport",
+      "element": "L1",
+      "name": "packet_loss_pct",
+      "before": 0.1,
+      "during": 0.1
+    },
+    {
+      "domain": "transport",
+      "element": "L1",
+      "name": "link_utilization_pct",
+      "before": 48.0,
+      "during": 10.5
+    },
+    {
+      "domain": "transport",
+      "element": "L1",
+      "name": "latency_ms",
+      "before": 6.0,
+      "during": 6.0
+    },
+    {
+      "domain": "transport",
+      "element": "L2",
+      "name": "packet_loss_pct",
+      "before": 0.1,
+      "during": 0.1
+    },
+    {
+      "domain": "transport",
+      "element": "L2",
+      "name": "link_utilization_pct",
+      "before": 41.0,
+      "during": 9.1
+    },
+    {
+      "domain": "transport",
+      "element": "L2",
+      "name": "latency_ms",
+      "before": 8.0,
+      "during": 8.0
+    },
+    {
+      "domain": "transport",
+      "element": "L3",
+      "name": "packet_loss_pct",
+      "before": 0.1,
+      "during": 4.2
+    },
+    {
+      "domain": "transport",
+      "element": "L3",
+      "name": "link_utilization_pct",
+      "before": 55.0,
+      "during": 98.0
+    },
+    {
+      "domain": "transport",
+      "element": "L3",
+      "name": "latency_ms",
+      "before": 4.0,
+      "during": 95.0
+    },
+    {
+      "domain": "core",
+      "element": "AMF",
+      "name": "registration_success_pct",
+      "before": 99.5,
+      "during": 99.5
+    },
+    {
+      "domain": "core",
+      "element": "AMF",
+      "name": "cpu_load_pct",
+      "before": 50.0,
+      "during": 50.0
+    },
+    {
+      "domain": "core",
+      "element": "SMF",
+      "name": "session_setup_success_pct",
+      "before": 99.2,
+      "during": 99.2
+    },
+    {
+      "domain": "core",
+      "element": "SMF",
+      "name": "cpu_load_pct",
+      "before": 45.0,
+      "during": 45.0
+    },
+    {
+      "domain": "core",
+      "element": "UPF",
+      "name": "packet_drop_pct",
+      "before": 0.1,
+      "during": 0.1
+    },
+    {
+      "domain": "core",
+      "element": "UPF",
+      "name": "cpu_load_pct",
+      "before": 40.0,
+      "during": 40.0
+    }
+  ],
+  "config_changes": [
+    {
+      "time": "14:26:16",
+      "domain": "ran",
+      "element": "C2",
+      "description": "Mise à jour de la liste des cellules voisines (changement planifié)."
+    }
+  ],
+  "logs": [
+    {
+      "time": "14:26:17",
+      "domain": "ran",
+      "element": "C2",
+      "message": "configuration applied: neighbour list updated (3 entries)"
+    },
+    {
+      "time": "16:08:08",
+      "domain": "core",
+      "element": "AMF",
+      "message": "TLS certificate expires in 21 days"
+    },
+    {
+      "time": "16:45:15",
+      "domain": "transport",
+      "element": "R1",
+      "message": "queue drops increasing on port P3 (L3): output buffer full"
+    }
+  ]
+}

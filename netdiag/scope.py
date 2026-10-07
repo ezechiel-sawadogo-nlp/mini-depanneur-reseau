@@ -13,7 +13,7 @@ from typing import TypedDict
 
 from langgraph.graph import END, START, StateGraph
 
-from netdiag.scenarios import load_network
+from netdiag.topology import path_to_core
 
 
 class ScopeState(TypedDict):
@@ -24,17 +24,6 @@ class ScopeState(TypedDict):
     common: list[str]    # écrit par find_common
     suspects: list[str]  # écrit par exonerate
     cleared: list[str]   # écrit par exonerate
-
-
-def path_to_core(element: str) -> list[str]:
-    """L'élément lui-même, puis tout ce dont il dépend jusqu'au cœur."""
-    depends_on = load_network()["depends_on"]
-    path = [element]
-    for parent in depends_on.get(element, []):
-        for e in path_to_core(parent):
-            if e not in path:
-                path.append(e)
-    return path
 
 
 # --- Les nœuds : des fonctions qui lisent l'état et renvoient ce qu'elles changent ---

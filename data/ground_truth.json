@@ -1,5 +1,77 @@
 {
-  "SC01": {"domain": "transport", "element": "L1", "fault": "fiber_cut"},
-  "SC02": {"domain": "ran", "element": "C3", "fault": "config_error"},
-  "SC03": {"domain": "core", "element": "SMF", "fault": "overload"}
+  "SC01": {
+    "domain": "transport",
+    "element": "L1",
+    "fault": "fiber_cut"
+  },
+  "SC02": {
+    "domain": "ran",
+    "element": "C3",
+    "fault": "config_error"
+  },
+  "SC03": {
+    "domain": "core",
+    "element": "SMF",
+    "fault": "overload"
+  },
+  "SC04": {
+    "domain": "ran",
+    "element": "S1",
+    "fault": "hardware_failure"
+  },
+  "SC05": {
+    "domain": "transport",
+    "element": "L2",
+    "fault": "link_congestion"
+  },
+  "SC06": {
+    "domain": "transport",
+    "element": "L3",
+    "fault": "fiber_cut"
+  },
+  "SC07": {
+    "domain": "transport",
+    "element": "L3",
+    "fault": "link_congestion"
+  },
+  "SC08": {
+    "domain": "transport",
+    "element": "R1",
+    "fault": "config_error"
+  },
+  "SC09": {
+    "domain": "ran",
+    "element": "C1",
+    "fault": "config_error"
+  },
+  "SC10": {
+    "domain": "ran",
+    "element": "C2",
+    "fault": "interference"
+  },
+  "SC11": {
+    "domain": "ran",
+    "element": "C3",
+    "fault": "hardware_failure"
+  },
+  "SC12": {
+    "domain": "core",
+    "element": "AMF",
+    "fault": "overload"
+  },
+  "SC13": {
+    "domain": "core",
+    "element": "SMF",
+    "fault": "config_error"
+  },
+  "SC14": {
+    "domain": "core",
+    "element": "UPF",
+    "fault": "config_error"
+  },
+  "SC15": {
+    "domain": "core",
+    "element": "UPF",
+    "fault": "hardware_failure"
+  }
 }

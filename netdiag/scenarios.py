@@ -20,8 +20,14 @@ def load_network() -> dict:
     return _read_json(DATA_DIR / "network.json")
 
 
-def list_scenario_ids() -> list[str]:
-    return sorted(p.stem for p in (DATA_DIR / "scenarios").glob("*.json"))
+def list_scenario_ids(split: str = "all") -> list[str]:
+    """Les identifiants des scénarios : tous, ou seulement ceux d'un sous-ensemble.
+
+    split : "all", "dev" (mise au point du système) ou "test" (notation finale).
+    """
+    if split == "all":
+        return sorted(p.stem for p in (DATA_DIR / "scenarios").glob("*.json"))
+    return _read_json(DATA_DIR / "splits.json")[split]
 
 
 def load_scenario(scenario_id: str) -> dict:

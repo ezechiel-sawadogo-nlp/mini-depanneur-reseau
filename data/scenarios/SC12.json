@@ -1,0 +1,239 @@
+{
+  "id": "SC12",
+  "ticket": "Depuis 10:48, sur l'ensemble du réseau, de nombreux abonnés n'arrivent pas à s'enregistrer sur le réseau.",
+  "alarms": [
+    {
+      "time": "10:01:24",
+      "domain": "ran",
+      "element": "S1",
+      "name": "BATTERY_TEST_RUNNING",
+      "severity": "minor"
+    },
+    {
+      "time": "10:48:20",
+      "domain": "core",
+      "element": "AMF",
+      "name": "CPU_OVERLOAD",
+      "severity": "critical"
+    },
+    {
+      "time": "10:49:00",
+      "domain": "core",
+      "element": "AMF",
+      "name": "REGISTRATION_FAILURE_HIGH",
+      "severity": "major"
+    }
+  ],
+  "kpis": [
+    {
+      "domain": "ran",
+      "element": "C1",
+      "name": "connected_users",
+      "before": 140,
+      "during": 119
+    },
+    {
+      "domain": "ran",
+      "element": "C1",
+      "name": "data_throughput_mbps",
+      "before": 42.0,
+      "during": 35.7
+    },
+    {
+      "domain": "ran",
+      "element": "C1",
+      "name": "call_drop_rate_pct",
+      "before": 0.8,
+      "during": 0.8
+    },
+    {
+      "domain": "ran",
+      "element": "C1",
+      "name": "signal_quality_db",
+      "before": 14.0,
+      "during": 14.0
+    },
+    {
+      "domain": "ran",
+      "element": "C2",
+      "name": "connected_users",
+      "before": 95,
+      "during": 81
+    },
+    {
+      "domain": "ran",
+      "element": "C2",
+      "name": "data_throughput_mbps",
+      "before": 35.0,
+      "during": 29.8
+    },
+    {
+      "domain": "ran",
+      "element": "C2",
+      "name": "call_drop_rate_pct",
+      "before": 0.7,
+      "during": 0.7
+    },
+    {
+      "domain": "ran",
+      "element": "C2",
+      "name": "signal_quality_db",
+      "before": 13.0,
+      "during": 13.0
+    },
+    {
+      "domain": "ran",
+      "element": "C3",
+      "name": "connected_users",
+      "before": 110,
+      "during": 94
+    },
+    {
+      "domain": "ran",
+      "element": "C3",
+      "name": "data_throughput_mbps",
+      "before": 38.0,
+      "during": 32.3
+    },
+    {
+      "domain": "ran",
+      "element": "C3",
+      "name": "call_drop_rate_pct",
+      "before": 0.8,
+      "during": 0.8
+    },
+    {
+      "domain": "ran",
+      "element": "C3",
+      "name": "signal_quality_db",
+      "before": 14.0,
+      "during": 14.0
+    },
+    {
+      "domain": "transport",
+      "element": "L1",
+      "name": "packet_loss_pct",
+      "before": 0.1,
+      "during": 0.1
+    },
+    {
+      "domain": "transport",
+      "element": "L1",
+      "name": "link_utilization_pct",
+      "before": 48.0,
+      "during": 40.8
+    },
+    {
+      "domain": "transport",
+      "element": "L1",
+      "name": "latency_ms",
+      "before": 6.0,
+      "during": 6.0
+    },
+    {
+      "domain": "transport",
+      "element": "L2",
+      "name": "packet_loss_pct",
+      "before": 0.1,
+      "during": 0.1
+    },
+    {
+      "domain": "transport",
+      "element": "L2",
+      "name": "link_utilization_pct",
+      "before": 41.0,
+      "during": 34.9
+    },
+    {
+      "domain": "transport",
+      "element": "L2",
+      "name": "latency_ms",
+      "before": 8.0,
+      "during": 8.0
+    },
+    {
+      "domain": "transport",
+      "element": "L3",
+      "name": "packet_loss_pct",
+      "before": 0.1,
+      "during": 0.1
+    },
+    {
+      "domain": "transport",
+      "element": "L3",
+      "name": "link_utilization_pct",
+      "before": 55.0,
+      "during": 46.8
+    },
+    {
+      "domain": "transport",
+      "element": "L3",
+      "name": "latency_ms",
+      "before": 4.0,
+      "during": 4.0
+    },
+    {
+      "domain": "core",
+      "element": "AMF",
+      "name": "registration_success_pct",
+      "before": 99.5,
+      "during": 64.0
+    },
+    {
+      "domain": "core",
+      "element": "AMF",
+      "name": "cpu_load_pct",
+      "before": 50.0,
+      "during": 98.0
+    },
+    {
+      "domain": "core",
+      "element": "SMF",
+      "name": "session_setup_success_pct",
+      "before": 99.2,
+      "during": 99.2
+    },
+    {
+      "domain": "core",
+      "element": "SMF",
+      "name": "cpu_load_pct",
+      "before": 45.0,
+      "during": 45.0
+    },
+    {
+      "domain": "core",
+      "element": "UPF",
+      "name": "packet_drop_pct",
+      "before": 0.1,
+      "during": 0.1
+    },
+    {
+      "domain": "core",
+      "element": "UPF",
+      "name": "cpu_load_pct",
+      "before": 40.0,
+      "during": 40.0
+    }
+  ],
+  "config_changes": [],
+  "logs": [
+    {
+      "time": "10:01:24",
+      "domain": "ran",
+      "element": "S1",
+      "message": "scheduled battery test started"
+    },
+    {
+      "time": "10:48:18",
+      "domain": "core",
+      "element": "AMF",
+      "message": "CPU load 98%, request queue full"
+    },
+    {
+      "time": "10:48:40",
+      "domain": "core",
+      "element": "AMF",
+      "message": "rejecting registration requests (congestion control active)"
+    }
+  ]
+}

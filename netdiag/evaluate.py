@@ -3,8 +3,8 @@
 C'est le seul module autorisé à lire la vérité terrain.
 
 Usage :
-    python -m netdiag.evaluate
-    python -m netdiag.evaluate --repeats 3 --prompt brief   # variante écartée
+    python -m netdiag.evaluate                  # scénarios de mise au point (dev)
+    python -m netdiag.evaluate --split test     # scénarios de notation, à lancer une seule fois
 """
 
 import argparse
@@ -37,7 +37,7 @@ def label(diagnosis: dict | None) -> str:
     return " / ".join(diagnosis[f] for f in FIELDS)
 
 
-def run_all(repeats: int, brief: bool) -> list[dict]:
+def run_all(scenario_ids: list[str], repeats: int, brief: bool) -> list[dict]:
     """Exécute chaque scénario 'repeats' fois et renvoie un enregistrement par exécution.
 
     On alterne les scénarios (SC01, SC02, SC03, SC01, ...) au lieu de répéter le même
@@ -46,7 +46,7 @@ def run_all(repeats: int, brief: bool) -> list[dict]:
     truth = load_ground_truth()
     records = []
     for repeat in range(1, repeats + 1):
-        for scenario_id in list_scenario_ids():
+        for scenario_id in scenario_ids:
             start = time.perf_counter()
             run = diagnose(load_scenario(scenario_id), brief=brief)
             seconds = round(time.perf_counter() - start, 1)
@@ -64,17 +64,17 @@ def run_all(repeats: int, brief: bool) -> list[dict]:
                 f"{scenario_id} n°{repeat}  {verdict}  prédit : {label(run['diagnosis']):<30}"
                 f" outils : {run['tool_calls']:>2}  durée : {seconds:>5} s"
                 f"  tokens lus/écrits : {run['prompt_tokens']}/{run['output_tokens']}",
-                flush=True,
             )
+            print(f"          consulté : {', '.join(run['consulted']) or 'rien'}", flush=True)
     return records
 
 
-def print_summary(records: list[dict], repeats: int, prompt: str) -> None:
+def print_summary(records: list[dict], title: str) -> None:
     truth = load_ground_truth()
     n = len(records)
-    print(f"\nRésumé : {MODEL}, agent seul, prompt {prompt}, {repeats} répétition(s)")
+    print(f"\nRésumé : {title}")
     print(f"{'scénario':<9} {'réussites':<10} détail")
-    for scenario_id in list_scenario_ids():
+    for scenario_id in sorted({r["scenario"] for r in records}):
         runs = [r for r in records if r["scenario"] == scenario_id]
         good = sum(r["score"]["exact"] for r in runs)
         counts = Counter(label(r["diagnosis"]) for r in runs)
@@ -102,14 +102,19 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Évalue l'agent seul sur tous les scénarios.")
     parser.add_argument("--repeats", type=int, default=1, help="exécutions par scénario")
     parser.add_argument("--prompt", choices=["verbose", "brief"], default="verbose")
+    parser.add_argument("--split", choices=["dev", "test", "all"], default="dev",
+                        help="dev : mise au point ; test : notation finale")
     args = parser.parse_args()
 
-    records = run_all(args.repeats, brief=args.prompt == "brief")
-    print_summary(records, args.repeats, args.prompt)
+    scenario_ids = list_scenario_ids(args.split)
+    records = run_all(scenario_ids, args.repeats, brief=args.prompt == "brief")
+    title = f"{MODEL}, agent seul, prompt {args.prompt}, scénarios {args.split}, {args.repeats} répétition(s)"
+    print_summary(records, title)
 
     RESULTS_DIR.mkdir(exist_ok=True)
-    out = RESULTS_DIR / f"single_agent_{args.prompt}.json"
-    payload = {"model": MODEL, "prompt": args.prompt, "repeats": args.repeats, "records": records}
+    out = RESULTS_DIR / f"single_agent_{args.prompt}_{args.split}.json"
+    payload = {"model": MODEL, "prompt": args.prompt, "split": args.split,
+               "repeats": args.repeats, "records": records}
     out.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
     print(f"\nDétail enregistré dans {out.relative_to(RESULTS_DIR.parent)}")
 
