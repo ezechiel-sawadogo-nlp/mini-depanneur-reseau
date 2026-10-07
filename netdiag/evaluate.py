@@ -4,6 +4,7 @@ C'est le seul module autorisé à lire la vérité terrain.
 
 Usage :
     python -m netdiag.evaluate                          # agent seul, scénarios dev
+    python -m netdiag.evaluate --system single_aided    # agent seul avec les aides de l'équipe
     python -m netdiag.evaluate --system team            # équipe multi-agents, scénarios dev
     python -m netdiag.evaluate --system team --split test   # notation finale, une seule fois
 """
@@ -24,7 +25,7 @@ FIELDS = ("domain", "element", "fault")
 # Les systèmes comparés : un nom, la fonction qui diagnostique un scénario, le fichier de résultats.
 SYSTEMS = {
     "single": (lambda scenario: diagnose(scenario), "single_agent_verbose"),
-    "single_coverage": (lambda scenario: diagnose(scenario, coverage=True), "single_agent_coverage"),
+    "single_aided": (lambda scenario: diagnose(scenario, aided=True), "single_agent_aided"),
     "single_brief": (lambda scenario: diagnose(scenario, brief=True), "single_agent_brief"),
     "team": (lambda scenario: diagnose_team(scenario), "team"),
 }

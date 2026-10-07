@@ -1,0 +1,429 @@
+{
+  "model": "qwen2.5:7b",
+  "system": "team",
+  "split": "dev",
+  "repeats": 1,
+  "records": [
+    {
+      "scenario": "SC01",
+      "repeat": 1,
+      "expected": {
+        "domain": "transport",
+        "element": "L1",
+        "fault": "fiber_cut"
+      },
+      "diagnosis": {
+        "domain": "transport",
+        "element": "L1",
+        "fault": "fiber_cut"
+      },
+      "reports": [
+        {
+          "domain": "ran",
+          "analysis": "À partir de 10:01, les cellules C1 et C2 du site S1 ont subi une perte de backhaul, entraînant une perte de service pour les abonnés. Les mesures de C1 et C2 montrent une diminution significative des utilisateurs connectés et du throughput de données, tandis que C3 n'a pas été affectée.",
+          "affected_elements": [
+            "C1",
+            "C2"
+          ],
+          "status": "local_cause",
+          "element": "S1",
+          "fault": "fiber_cut",
+          "first_event_time": "10:01:05"
+        },
+        {
+          "domain": "transport",
+          "analysis": "À partir de 10:01, le lien L1 entre le site S1 et le routeur R1 a subi une coupure physique, ce qui a entraîné une perte totale de signal et une utilisation du lien à 0%. Cette coupure a provoqué une utilisation du lien R1 vers le cœur de réseau à 18.2%, indiquant que le trafic a été redirigé via L3.",
+          "affected_elements": [
+            "L1",
+            "R1",
+            "L3"
+          ],
+          "status": "local_cause",
+          "element": "L1",
+          "fault": "fiber_cut",
+          "first_event_time": "10:01:02"
+        },
+        {
+          "domain": "core",
+          "analysis": "À 10:01, une alarme AMF GNB_UNREACHABLE a été déclenchée, indiquant une perte de l'association SCTP avec le gNB S1. Les KPI n'ont pas montré de changements notables, donc il n'y a pas eu de surcharge ou de perte de paquets. Les changements de configuration récents sont également absents.",
+          "affected_elements": [],
+          "status": "impacted",
+          "element": "none",
+          "fault": "none",
+          "first_event_time": "10:01:09"
+        }
+      ],
+      "consulted": [
+        "alarms:ran",
+        "kpis:ran",
+        "logs:ran",
+        "config_changes:ran",
+        "kpis:transport",
+        "alarms:transport",
+        "logs:transport",
+        "config_changes:transport",
+        "alarms:core",
+        "kpis:core",
+        "logs:core",
+        "config_changes:core"
+      ],
+      "reasoning": [
+        "Rapport de l'agent ran : statut local_cause ; élément S1 ; panne fiber_cut ; éléments anormaux C1, C2 ; premier événement 10:01:05 ; analyse : À partir de 10:01, les cellules C1 et C2 du site S1 ont subi une perte de backhaul, entraînant une perte de service pour les abonnés. Les mesures de C1 et C2 montrent une diminution significative des utilisateurs connectés et du throughput de données, tandis que C3 n'a pas été affectée.",
+        "Rapport de l'agent transport : statut local_cause ; élément L1 ; panne fiber_cut ; éléments anormaux L1, R1, L3 ; premier événement 10:01:02 ; analyse : À partir de 10:01, le lien L1 entre le site S1 et le routeur R1 a subi une coupure physique, ce qui a entraîné une perte totale de signal et une utilisation du lien à 0%. Cette coupure a provoqué une utilisation du lien R1 vers le cœur de réseau à 18.2%, indiquant que le trafic a été redirigé via L3.",
+        "Rapport de l'agent core : statut impacted ; élément none ; panne none ; éléments anormaux aucun ; premier événement 10:01:09 ; analyse : À 10:01, une alarme AMF GNB_UNREACHABLE a été déclenchée, indiquant une perte de l'association SCTP avec le gNB S1. Les KPI n'ont pas montré de changements notables, donc il n'y a pas eu de surcharge ou de perte de paquets. Les changements de configuration récents sont également absents.",
+        "Orchestrateur : Les rapports indiquent une coupure physique du lien L1, qui a entraîné une perte de service pour les cellules C1 et C2 du site S1. Cette coupure a été confirmée par l'agent transport et a provoqué une perte de l'association SCTP avec le gNB S1, comme signalé par l'agent core. Les cellules C3 et les éléments du cœur de réseau n'ont pas été affectés, ce qui exclut une panne matérielle ou une surcharge. Les changements de configuration récents sont absents, donc une erreur de configuration peut être exclue. Le brouillage radio n'est pas mentionné, donc il n'est pas la cause."
+      ],
+      "hit_turn_limit": false,
+      "turns": 4,
+      "tool_calls": 12,
+      "tool_errors": 0,
+      "model_calls": 7,
+      "prompt_tokens": 9515,
+      "output_tokens": 893,
+      "prompt_seconds": 71.9,
+      "output_seconds": 212.5,
+      "score": {
+        "domain": true,
+        "element": true,
+        "fault": true,
+        "exact": true
+      },
+      "seconds": 284.8
+    },
+    {
+      "scenario": "SC02",
+      "repeat": 1,
+      "expected": {
+        "domain": "ran",
+        "element": "C3",
+        "fault": "config_error"
+      },
+      "diagnosis": {
+        "domain": "ran",
+        "element": "C3",
+        "fault": "config_error"
+      },
+      "reports": [
+        {
+          "domain": "ran",
+          "analysis": "Les mesures de la cellule C3 montrent une augmentation significative de la taux de coupure des appels et une forte diminution de la qualité du signal. Ces changements sont survenus après une modification de la configuration de l'antenne de la cellule C3.",
+          "affected_elements": [
+            "C3"
+          ],
+          "status": "local_cause",
+          "element": "C3",
+          "fault": "config_error",
+          "first_event_time": "09:32:00"
+        },
+        {
+          "domain": "transport",
+          "analysis": "Les mesures de performance du domaine transport n'ont pas montré de changements notables. Aucune alarme, log ou changement de configuration n'a été enregistré. Cela suggère que le problème pourrait ne pas être localisé dans ce domaine.",
+          "affected_elements": [],
+          "status": "healthy",
+          "element": "none",
+          "fault": "none",
+          "first_event_time": ""
+        },
+        {
+          "domain": "core",
+          "analysis": "Les KPI n'ont pas montré de changements notables pendant l'incident. Aucune alarme, log ou changement de configuration n'a été enregistré dans le domaine core.",
+          "affected_elements": [],
+          "status": "healthy",
+          "element": "none",
+          "fault": "none",
+          "first_event_time": ""
+        }
+      ],
+      "consulted": [
+        "kpis:ran",
+        "alarms:ran",
+        "logs:ran",
+        "config_changes:ran",
+        "kpis:transport",
+        "alarms:transport",
+        "logs:transport",
+        "config_changes:transport",
+        "kpis:core",
+        "alarms:core",
+        "logs:core",
+        "config_changes:core"
+      ],
+      "reasoning": [
+        "Rapport de l'agent ran : statut local_cause ; élément C3 ; panne config_error ; éléments anormaux C3 ; premier événement 09:32:00 ; analyse : Les mesures de la cellule C3 montrent une augmentation significative de la taux de coupure des appels et une forte diminution de la qualité du signal. Ces changements sont survenus après une modification de la configuration de l'antenne de la cellule C3.",
+        "Rapport de l'agent transport : statut healthy ; élément none ; panne none ; éléments anormaux aucun ; premier événement aucun ; analyse : Les mesures de performance du domaine transport n'ont pas montré de changements notables. Aucune alarme, log ou changement de configuration n'a été enregistré. Cela suggère que le problème pourrait ne pas être localisé dans ce domaine.",
+        "Rapport de l'agent core : statut healthy ; élément none ; panne none ; éléments anormaux aucun ; premier événement aucun ; analyse : Les KPI n'ont pas montré de changements notables pendant l'incident. Aucune alarme, log ou changement de configuration n'a été enregistré dans le domaine core.",
+        "Orchestrateur : Le problème semble être localisé dans le domaine ran, car l'agent ran a identifié une configuration incorrecte qui a affecté la cellule C3. Les cellules C1 et C2, qui dépendent de S1, fonctionnent normalement, ce qui exclut S1 et ses dépendances. L'incident ne semble pas être lié au transport ou au core, donc la cause racine est la configuration incorrecte de la cellule C3."
+      ],
+      "hit_turn_limit": false,
+      "turns": 4,
+      "tool_calls": 12,
+      "tool_errors": 0,
+      "model_calls": 7,
+      "prompt_tokens": 9397,
+      "output_tokens": 684,
+      "prompt_seconds": 77.9,
+      "output_seconds": 164.9,
+      "score": {
+        "domain": true,
+        "element": true,
+        "fault": true,
+        "exact": true
+      },
+      "seconds": 243.7
+    },
+    {
+      "scenario": "SC03",
+      "repeat": 1,
+      "expected": {
+        "domain": "core",
+        "element": "SMF",
+        "fault": "overload"
+      },
+      "diagnosis": {
+        "domain": "core",
+        "element": "SMF",
+        "fault": "overload"
+      },
+      "reports": [
+        {
+          "domain": "ran",
+          "analysis": "Les mesures de C1 et C3 montrent une diminution de la bande passante de données pendant l'incident, ce qui pourrait indiquer une surcharge du lien de transport ou une interference radio. Cependant, aucune alarme, log ou changement de configuration n'a été enregistré.",
+          "affected_elements": [
+            "C1",
+            "C3"
+          ],
+          "status": "impacted",
+          "element": "none",
+          "fault": "none",
+          "first_event_time": "14:04"
+        },
+        {
+          "domain": "transport",
+          "analysis": "Les mesures de L1 et L2 montrent une utilisation du lien de 28.8% pendant l'incident, en baisse par rapport à 48.0% avant l'incident. Cela suggère une possible coupure physique du lien ou une saturation du trafic. Aucune alarme, log ou changement de configuration n'a été enregistré.",
+          "affected_elements": [
+            "L1",
+            "L2"
+          ],
+          "status": "impacted",
+          "element": "L1",
+          "fault": "link_congestion",
+          "first_event_time": "14:04:00"
+        },
+        {
+          "domain": "core",
+          "analysis": "Les mesures de la SMF montrent une surcharge du processeur et des tentatives de session de données échouées. Ces mesures commencent à 14:04:48, ce qui correspond au premier événement signalé.",
+          "affected_elements": [
+            "SMF"
+          ],
+          "status": "local_cause",
+          "element": "SMF",
+          "fault": "overload",
+          "first_event_time": "14:04:48"
+        }
+      ],
+      "consulted": [
+        "alarms:ran",
+        "kpis:ran",
+        "logs:ran",
+        "config_changes:ran",
+        "alarms:transport",
+        "kpis:transport",
+        "logs:transport",
+        "config_changes:transport",
+        "alarms:core",
+        "kpis:core",
+        "logs:core",
+        "config_changes:core"
+      ],
+      "reasoning": [
+        "Rapport de l'agent ran : statut impacted ; élément none ; panne none ; éléments anormaux C1, C3 ; premier événement 14:04 ; analyse : Les mesures de C1 et C3 montrent une diminution de la bande passante de données pendant l'incident, ce qui pourrait indiquer une surcharge du lien de transport ou une interference radio. Cependant, aucune alarme, log ou changement de configuration n'a été enregistré.",
+        "Rapport de l'agent transport : statut impacted ; élément L1 ; panne link_congestion ; éléments anormaux L1, L2 ; premier événement 14:04:00 ; analyse : Les mesures de L1 et L2 montrent une utilisation du lien de 28.8% pendant l'incident, en baisse par rapport à 48.0% avant l'incident. Cela suggère une possible coupure physique du lien ou une saturation du trafic. Aucune alarme, log ou changement de configuration n'a été enregistré.",
+        "Rapport de l'agent core : statut local_cause ; élément SMF ; panne overload ; éléments anormaux SMF ; premier événement 14:04:48 ; analyse : Les mesures de la SMF montrent une surcharge du processeur et des tentatives de session de données échouées. Ces mesures commencent à 14:04:48, ce qui correspond au premier événement signalé.",
+        "Orchestrateur : Les symptômes indiquent une surcharge de la SMF, qui est la cause racine. Les mesures de la SMF montrent une surcharge du processeur et des tentatives de session de données échouées. Les cellules C1 et C3 sont également touchées, ce qui suggère une surcharge du lien de transport. Aucune panne matérielle ou coupure physique n'a été signalée, donc la surcharge du lien de transport est la cause la plus probable."
+      ],
+      "hit_turn_limit": false,
+      "turns": 4,
+      "tool_calls": 12,
+      "tool_errors": 0,
+      "model_calls": 7,
+      "prompt_tokens": 9464,
+      "output_tokens": 774,
+      "prompt_seconds": 84.4,
+      "output_seconds": 194.0,
+      "score": {
+        "domain": true,
+        "element": true,
+        "fault": true,
+        "exact": true
+      },
+      "seconds": 279.0
+    },
+    {
+      "scenario": "SC04",
+      "repeat": 1,
+      "expected": {
+        "domain": "ran",
+        "element": "S1",
+        "fault": "hardware_failure"
+      },
+      "diagnosis": {
+        "domain": "ran",
+        "element": "S1",
+        "fault": "hardware_failure"
+      },
+      "reports": [
+        {
+          "domain": "ran",
+          "analysis": "À partir de 11:20, les cellules C1 et C2 du site S1 ont subi une panne matérielle, indiquée par des mesures de performance nulles et des alarmes critiques. Les cellules sont sorties de service, ce qui explique la perte de service mobile pour les abonnés.",
+          "affected_elements": [
+            "C1",
+            "C2"
+          ],
+          "status": "local_cause",
+          "element": "S1",
+          "fault": "hardware_failure",
+          "first_event_time": "11:20:15"
+        },
+        {
+          "domain": "transport",
+          "analysis": "Les mesures de L3 montrent une forte augmentation de la charge de lien pendant l'incident, passant de 55.0% à 18.2%, ce qui suggère une surcharge du lien. Cependant, aucune alarme, log ou changement de configuration n'a été enregistré.",
+          "affected_elements": [
+            "L3"
+          ],
+          "status": "impacted",
+          "element": "L3",
+          "fault": "overload",
+          "first_event_time": "11:20"
+        },
+        {
+          "domain": "core",
+          "analysis": "À 11:20, une alarme AMF GNB_UNREACHABLE a été déclenchée, indiquant une perte de l'association SCTP avec le gNB S1. Les KPI n'ont pas montré de changements notables, donc il n'y a pas eu de surcharge ou de perte de paquets. Les changements de configuration récents sont également absents.",
+          "affected_elements": [],
+          "status": "impacted",
+          "element": "none",
+          "fault": "none",
+          "first_event_time": "11:20:21"
+        }
+      ],
+      "consulted": [
+        "alarms:ran",
+        "kpis:ran",
+        "logs:ran",
+        "config_changes:ran",
+        "kpis:transport",
+        "alarms:transport",
+        "logs:transport",
+        "config_changes:transport",
+        "alarms:core",
+        "kpis:core",
+        "logs:core",
+        "config_changes:core"
+      ],
+      "reasoning": [
+        "Rapport de l'agent ran : statut local_cause ; élément S1 ; panne hardware_failure ; éléments anormaux C1, C2 ; premier événement 11:20:15 ; analyse : À partir de 11:20, les cellules C1 et C2 du site S1 ont subi une panne matérielle, indiquée par des mesures de performance nulles et des alarmes critiques. Les cellules sont sorties de service, ce qui explique la perte de service mobile pour les abonnés.",
+        "Rapport de l'agent transport : statut impacted ; élément L3 ; panne overload ; éléments anormaux L3 ; premier événement 11:20 ; analyse : Les mesures de L3 montrent une forte augmentation de la charge de lien pendant l'incident, passant de 55.0% à 18.2%, ce qui suggère une surcharge du lien. Cependant, aucune alarme, log ou changement de configuration n'a été enregistré.",
+        "Rapport de l'agent core : statut impacted ; élément none ; panne none ; éléments anormaux aucun ; premier événement 11:20:21 ; analyse : À 11:20, une alarme AMF GNB_UNREACHABLE a été déclenchée, indiquant une perte de l'association SCTP avec le gNB S1. Les KPI n'ont pas montré de changements notables, donc il n'y a pas eu de surcharge ou de perte de paquets. Les changements de configuration récents sont également absents.",
+        "Orchestrateur : Les cellules C1 et C2 du site S1 sont en panne matérielle, ce qui explique la perte de service mobile. Les mesures de L3 montrent une surcharge, mais aucun élément du cœur de réseau n'est affecté. Les cellules C3 fonctionnent normalement, ce qui exclut une panne globale. La cause est donc localisée au site S1, où la panne matérielle des cellules C1 et C2 est la cause racine."
+      ],
+      "hit_turn_limit": false,
+      "turns": 4,
+      "tool_calls": 12,
+      "tool_errors": 0,
+      "model_calls": 7,
+      "prompt_tokens": 9447,
+      "output_tokens": 795,
+      "prompt_seconds": 79.5,
+      "output_seconds": 196.7,
+      "score": {
+        "domain": true,
+        "element": true,
+        "fault": true,
+        "exact": true
+      },
+      "seconds": 276.9
+    },
+    {
+      "scenario": "SC05",
+      "repeat": 1,
+      "expected": {
+        "domain": "transport",
+        "element": "L2",
+        "fault": "link_congestion"
+      },
+      "diagnosis": {
+        "domain": "transport",
+        "element": "L2",
+        "fault": "link_congestion"
+      },
+      "reports": [
+        {
+          "domain": "ran",
+          "analysis": "Les mesures de la cellule C3 montrent une baisse significative du débit de données pendant l'incident, passant de 38.0 Mbps à 8.4 Mbps. Cette baisse est accompagnée d'une alarme LOW_THROUGHPUT à 18:34:00. Un changement de configuration a été appliqué à C3 à 16:00:30, ce qui pourrait être la cause racine.",
+          "affected_elements": [
+            "C3"
+          ],
+          "status": "local_cause",
+          "element": "C3",
+          "fault": "config_error",
+          "first_event_time": "18:34:00"
+        },
+        {
+          "domain": "transport",
+          "analysis": "Les mesures de L2 montrent une forte utilisation du lien pendant l'incident, avec une augmentation significative de la perte de paquets et de la latence. Cela suggère une surcharge du lien L2 entre le site S2 et le routeur R1.",
+          "affected_elements": [
+            "L2"
+          ],
+          "status": "local_cause",
+          "element": "L2",
+          "fault": "link_congestion",
+          "first_event_time": "18:30:00"
+        },
+        {
+          "domain": "core",
+          "analysis": "Les KPI n'ont pas montré de changements notables pendant l'incident. Cependant, il y a eu une alerte de licence UPF à 17:38:51, ce qui pourrait indiquer une surcharge du processeur.",
+          "affected_elements": [],
+          "status": "impacted",
+          "element": "UPF",
+          "fault": "overload",
+          "first_event_time": "17:38:51"
+        }
+      ],
+      "consulted": [
+        "kpis:ran",
+        "alarms:ran",
+        "logs:ran",
+        "config_changes:ran",
+        "kpis:transport",
+        "alarms:transport",
+        "logs:transport",
+        "config_changes:transport",
+        "kpis:core",
+        "alarms:core",
+        "logs:core",
+        "config_changes:core"
+      ],
+      "reasoning": [
+        "Rapport de l'agent ran : statut local_cause ; élément C3 ; panne config_error ; éléments anormaux C3 ; premier événement 18:34:00 ; analyse : Les mesures de la cellule C3 montrent une baisse significative du débit de données pendant l'incident, passant de 38.0 Mbps à 8.4 Mbps. Cette baisse est accompagnée d'une alarme LOW_THROUGHPUT à 18:34:00. Un changement de configuration a été appliqué à C3 à 16:00:30, ce qui pourrait être la cause racine.",
+        "Rapport de l'agent transport : statut local_cause ; élément L2 ; panne link_congestion ; éléments anormaux L2 ; premier événement 18:30:00 ; analyse : Les mesures de L2 montrent une forte utilisation du lien pendant l'incident, avec une augmentation significative de la perte de paquets et de la latence. Cela suggère une surcharge du lien L2 entre le site S2 et le routeur R1.",
+        "Rapport de l'agent core : statut impacted ; élément UPF ; panne overload ; éléments anormaux aucun ; premier événement 17:38:51 ; analyse : Les KPI n'ont pas montré de changements notables pendant l'incident. Cependant, il y a eu une alerte de licence UPF à 17:38:51, ce qui pourrait indiquer une surcharge du processeur.",
+        "Orchestrateur : Le rapport de l'agent ran indique une panne de configuration sur C3, qui a causé une baisse du débit. Cependant, l'agent transport a signalé une surcharge du lien L2, ce qui pourrait expliquer la réduction du débit observée. Le fait que l'agent core n'ait pas détecté de changements significatifs suggère que la surcharge du UPF n'est pas la cause racine. Par conséquent, la cause racine est la surcharge du lien L2."
+      ],
+      "hit_turn_limit": false,
+      "turns": 4,
+      "tool_calls": 12,
+      "tool_errors": 0,
+      "model_calls": 7,
+      "prompt_tokens": 9444,
+      "output_tokens": 793,
+      "prompt_seconds": 80.2,
+      "output_seconds": 195.3,
+      "score": {
+        "domain": true,
+        "element": true,
+        "fault": true,
+        "exact": true
+      },
+      "seconds": 276.1
+    }
+  ]
+}

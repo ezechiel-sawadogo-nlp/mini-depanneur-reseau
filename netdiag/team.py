@@ -23,9 +23,8 @@ from netdiag.agent import (
     parse_diagnosis, print_usage, run_agent, summarize,
 )
 from netdiag.scenarios import load_network, load_scenario
-from netdiag.scope import build_graph as build_scope_graph
+from netdiag.scope import scope_facts
 from netdiag.tools import DOMAINS
-from netdiag.topology import all_cells, all_sites, cells_behind
 
 DOMAIN_MAX_TURNS = 4  # un agent de domaine n'a que quatre sources à consulter
 # Le statut local_cause exige une preuve : sans cette exigence, chaque agent a tendance
@@ -173,28 +172,10 @@ def format_report(report: dict) -> str:
     )
 
 
-def scope_facts(reports: list[dict]) -> str:
-    """L'analyse de périmètre, calculée par le code et non par le modèle.
-
-    On part des cellules que l'agent ran déclare touchées, et on réutilise le graphe
-    de l'étape 2a : garder ce que les cellules touchées ont en commun, puis innocenter
-    tout ce qu'une cellule saine utilise aussi.
-    """
+def team_scope_facts(reports: list[dict]) -> str:
+    """L'analyse de périmètre, à partir des éléments que l'agent ran déclare anormaux."""
     listed = next((r["affected_elements"] for r in reports if r["domain"] == "ran"), [])
-    affected = sorted(
-        {e for e in listed if e in all_cells()}
-        | {cell for site in listed if site in all_sites() for cell in cells_behind(site)}
-    )
-    if not affected:
-        return "Analyse de périmètre : impossible, l'agent ran ne signale aucune cellule touchée."
-    healthy = [cell for cell in all_cells() if cell not in affected]
-    scope = build_scope_graph().invoke({"affected": affected, "healthy": healthy})
-    return "\n".join([
-        "Analyse de périmètre (calculée à partir de la topologie, donc fiable) :",
-        f"- cellules touchées : {', '.join(affected)} ; cellules saines : {', '.join(healthy) or 'aucune'}",
-        f"- éléments suspects, de l'aval vers l'amont : {', '.join(scope['suspects'])}",
-        f"- éléments innocentés : {', '.join(scope['cleared']) or 'aucun'}",
-    ])
+    return scope_facts(listed)
 
 
 def orchestrator_ask(ticket: str, reports: list[dict]) -> str:
@@ -203,7 +184,7 @@ def orchestrator_ask(ticket: str, reports: list[dict]) -> str:
     return "\n".join(
         [f"Ticket : {ticket}", ""]
         + [format_report(r) for r in reports]
-        + ["", scope_facts(reports)]
+        + ["", team_scope_facts(reports)]
         + ["", "Réponds en JSON avec exactement ces champs : analysis (ton raisonnement en"
            f" quelques phrases), domain, element, fault. Valeurs possibles : {choices}"]
     )
@@ -253,7 +234,7 @@ def build_team(scenario: dict, chat=ollama.chat, trace: bool = False):
         usage = measure("orchestrator", response)
         if trace:
             print("\n--- Orchestrateur ---")
-            print(scope_facts(state["reports"]))
+            print(team_scope_facts(state["reports"]))
             print_usage(usage)
             print(f"analyse : {analysis}")
         run = {

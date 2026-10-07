@@ -13,7 +13,7 @@ from typing import TypedDict
 
 from langgraph.graph import END, START, StateGraph
 
-from netdiag.topology import path_to_core
+from netdiag.topology import all_cells, all_sites, cells_behind, path_to_core
 
 
 class ScopeState(TypedDict):
@@ -56,6 +56,28 @@ def build_graph():
     builder.add_edge("find_common", "exonerate")
     builder.add_edge("exonerate", END)
     return builder.compile()
+
+
+def scope_facts(affected_elements: list[str], who: str = "l'agent ran ne signale") -> str:
+    """L'analyse de périmètre sous forme de texte, calculée par le code et non par le modèle.
+
+    affected_elements : les cellules (ou sites) déclarés touchés. On garde ce que les
+    cellules touchées ont en commun, puis on innocente tout ce qu'une cellule saine utilise.
+    """
+    affected = sorted(
+        {e for e in affected_elements if e in all_cells()}
+        | {cell for site in affected_elements if site in all_sites() for cell in cells_behind(site)}
+    )
+    if not affected:
+        return f"Analyse de périmètre : impossible, {who} aucune cellule touchée."
+    healthy = [cell for cell in all_cells() if cell not in affected]
+    scope = build_graph().invoke({"affected": affected, "healthy": healthy})
+    return "\n".join([
+        "Analyse de périmètre (calculée à partir de la topologie, donc fiable) :",
+        f"- cellules touchées : {', '.join(affected)} ; cellules saines : {', '.join(healthy) or 'aucune'}",
+        f"- éléments suspects, de l'aval vers l'amont : {', '.join(scope['suspects'])}",
+        f"- éléments innocentés : {', '.join(scope['cleared']) or 'aucun'}",
+    ])
 
 
 def main() -> None:

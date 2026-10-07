@@ -9,7 +9,7 @@ seuls changent les consignes, les domaines autorisés et le format de la répons
 
 Usage :
     python -m netdiag.agent SC01
-    python -m netdiag.agent SC01 --coverage       # oblige à consulter toutes les sources
+    python -m netdiag.agent SC01 --aided          # agent seul avec les mêmes aides que l'équipe
     python -m netdiag.agent SC01 --brief-prompt   # variante écartée (consigne de brièveté)
 """
 
@@ -22,7 +22,9 @@ import ollama
 from langgraph.graph import END, START, StateGraph
 
 from netdiag.scenarios import load_network, load_scenario
+from netdiag.scope import scope_facts
 from netdiag.tools import DOMAINS, make_tools, run_tool
+from netdiag.topology import all_cells
 
 MODEL = "qwen2.5:7b"
 MAX_TURNS = 8  # nombre maximal d'appels au modèle pendant l'enquête
@@ -62,9 +64,11 @@ def network_description() -> str:
     return "\n".join(lines)
 
 
-def system_prompt(brief: bool = False) -> str:
+def system_prompt(brief: bool = False, aided: bool = False) -> str:
     """Les consignes de l'agent seul.
 
+    aided : True ajoute les repères donnés aux agents de l'équipe (exigence de preuve),
+    pour que la comparaison entre l'agent seul et l'équipe soit équitable.
     brief : True ajoute une consigne de brièveté. Mesuré sur 3 scénarios x 3 exécutions :
     2,3 fois plus rapide, mais 3 diagnostics justes sur 9 contre 9 sur 9 sans elle.
     La variante est conservée pour pouvoir refaire la comparaison ; elle n'est pas utilisée.
@@ -85,6 +89,17 @@ def system_prompt(brief: bool = False) -> str:
         "4. Le type de panne se déduit des logs et des changements de configuration.",
         "",
     ]
+    if aided:
+        lines += [
+            "Repères :",
+            "- Un élément n'est la cause que si une alarme ou un log décrit sa défaillance au"
+            " début des symptômes, ou si un changement de configuration lui a été appliqué dans"
+            " l'heure qui précède.",
+            "- Un événement daté de plusieurs heures avant les symptômes n'est pas une preuve."
+            " Un simple avertissement mineur, sans mesure anormale, non plus.",
+            "- Un symptôme sur un élément peut venir d'un élément dont il dépend.",
+            "",
+        ]
     if brief:
         lines += [
             "Sois bref. Quand tu appelles des outils, n'écris pas plus d'une phrase.",
@@ -344,24 +359,110 @@ def summarize(final: AgentState) -> dict:
 # --- L'agent seul ------------------------------------------------------------------------
 
 def diagnose(
-    scenario: dict, chat=ollama.chat, brief: bool = False, coverage: bool = False, trace: bool = False
+    scenario: dict, chat=ollama.chat, brief: bool = False, aided: bool = False, trace: bool = False
 ) -> dict:
     """Lance l'agent seul sur un scénario et résume ce qui s'est passé.
 
-    coverage : True oblige l'agent à consulter les 12 sources avant de conclure.
+    aided : True donne à l'agent seul les mêmes aides qu'à l'équipe (voir diagnose_aided).
     """
+    if aided:
+        return diagnose_aided(scenario, chat=chat, trace=trace)
     final = run_agent(
         scenario,
         system=system_prompt(brief),
         user=f"Ticket : {scenario['ticket']}",
         final_schema=diagnosis_schema(),
         final_ask=diagnosis_ask(),
-        required=ALL_SOURCES if coverage else [],
-        max_turns=2 * MAX_TURNS if coverage else MAX_TURNS,
         chat=chat,
         trace=trace,
     )
     return {"diagnosis": parse_diagnosis(final["answer"]), **summarize(final)}
+
+
+def aided_schema() -> dict:
+    """Le diagnostic, précédé d'un champ analysis où le modèle raisonne d'abord."""
+    schema = diagnosis_schema()
+    return {
+        "type": "object",
+        "properties": {"analysis": {"type": "string"}, **schema["properties"]},
+        "required": ["analysis"] + schema["required"],
+    }
+
+
+def diagnose_aided(scenario: dict, chat=ollama.chat, trace: bool = False) -> dict:
+    """L'agent seul, avec les trois aides dont dispose l'équipe.
+
+    1. Couverture imposée : il doit consulter les 12 sources avant de conclure.
+    2. Exigence de preuve : les mêmes repères que les agents de domaine.
+    3. Analyse de périmètre : il déclare les cellules touchées, le code calcule les
+       suspects et les innocentés, puis il rend son diagnostic en en tenant compte.
+    Ce qui reste différent de l'équipe : un seul agent lit tout, dans un seul contexte.
+    """
+    cells = all_cells()
+    cells_schema = {
+        "type": "object",
+        "properties": {"affected_cells": {"type": "array", "items": {"type": "string", "enum": cells}}},
+        "required": ["affected_cells"],
+    }
+    cells_ask = (
+        "Indique en JSON les cellules dont les mesures sont anormales pendant l'incident, sous"
+        f" la forme {{\"affected_cells\": [...]}}. Cellules possibles : {', '.join(cells)}."
+    )
+    final = run_agent(
+        scenario,
+        system=system_prompt(aided=True),
+        user=f"Ticket : {scenario['ticket']}",
+        final_schema=cells_schema,
+        final_ask=cells_ask,
+        required=ALL_SOURCES,
+        max_turns=2 * MAX_TURNS,
+        chat=chat,
+        trace=trace,
+    )
+    try:
+        affected = [c for c in json.loads(final["answer"])["affected_cells"] if c in cells]
+    except (json.JSONDecodeError, KeyError, TypeError):
+        affected = []
+    facts = scope_facts(affected, who="tu ne signales")
+
+    # Deuxième et dernier appel : le diagnostic, avec l'analyse de périmètre sous les yeux.
+    history = final["messages"]
+    if history[-1].get("tool_calls"):
+        history = history[:-1]
+    choices = json.dumps(
+        {key: value["enum"] for key, value in diagnosis_schema()["properties"].items()},
+        ensure_ascii=False,
+    )
+    decide = "\n".join([
+        facts,
+        "",
+        "Méthode :",
+        "1. Un élément innocenté par l'analyse de périmètre ne peut pas être la cause : des"
+        " cellules saines en dépendent, donc il fonctionne.",
+        "2. Parmi les éléments suspects, retiens ceux pour lesquels tu as une preuve directe.",
+        "3. S'il en reste plusieurs, la cause est le plus en amont, c'est-à-dire le dernier de"
+        " la liste des suspects : sa panne explique les symptômes des éléments qui dépendent de"
+        " lui, alors que l'inverse est impossible.",
+        "4. S'il n'en reste aucun, choisis parmi les suspects celui qui paraît le plus"
+        " directement défaillant.",
+        "",
+        "Donne ta conclusion finale en JSON avec exactement ces champs : analysis (ton"
+        f" raisonnement en quelques phrases), domain, element, fault. Valeurs possibles : {choices}",
+    ])
+    messages = history + [
+        {"role": "user", "content": cells_ask},
+        {"role": "assistant", "content": final["answer"] or ""},
+        {"role": "user", "content": decide},
+    ]
+    schemas, _ = make_tools(scenario)  # mêmes outils : le début du prompt reste en cache
+    response = chat(model=MODEL, messages=messages, tools=schemas, format=aided_schema(), options=OPTIONS)
+    usage = measure("decide", response)
+    if trace:
+        print(f"\n{facts}")
+        print_usage(usage)
+        print(f"analyse : {response.message.content}")
+    final = {**final, "usage": final["usage"] + [usage]}
+    return {"diagnosis": parse_diagnosis(response.message.content), **summarize(final)}
 
 
 def main() -> None:
@@ -373,7 +474,7 @@ def main() -> None:
     run = diagnose(
         scenario,
         brief="--brief-prompt" in sys.argv,
-        coverage="--coverage" in sys.argv,
+        aided="--aided" in sys.argv,
         trace=True,
     )
     print(f"\nDiagnostic structuré : {run['diagnosis']}")
