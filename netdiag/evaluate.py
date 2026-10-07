@@ -48,11 +48,13 @@ def label(diagnosis: dict | None) -> str:
     return " / ".join(diagnosis[f] for f in FIELDS)
 
 
-def run_all(scenario_ids: list[str], repeats: int, run_one) -> list[dict]:
+def run_all(scenario_ids: list[str], repeats: int, run_one, save=None) -> list[dict]:
     """Exécute chaque scénario 'repeats' fois et renvoie un enregistrement par exécution.
 
     On alterne les scénarios (SC01, SC02, SC03, SC01, ...) au lieu de répéter le même
     trois fois de suite : les conditions d'exécution varient comme en usage réel.
+    save : fonction appelée après chaque exécution avec les enregistrements déjà obtenus,
+    pour ne rien perdre si une longue série est interrompue.
     """
     truth = load_ground_truth()
     records = []
@@ -77,6 +79,8 @@ def run_all(scenario_ids: list[str], repeats: int, run_one) -> list[dict]:
                 f"  tokens lus/écrits : {run['prompt_tokens']}/{run['output_tokens']}",
             )
             print(f"          consulté : {', '.join(run['consulted']) or 'rien'}", flush=True)
+            if save:
+                save(records)
     return records
 
 
@@ -99,6 +103,8 @@ def print_summary(records: list[dict], title: str) -> None:
     print(f"  appels d'outils en erreur : {sum(r['tool_errors'] for r in records)}")
     print(f"  plafond de tours atteint  : {sum(r['hit_turn_limit'] for r in records)}")
     print("Moyennes par exécution :")
+    sources = sum(len(set(r["consulted"])) for r in records) / n
+    print(f"  {'sources lues':<17} {sources:.1f} sur 12")
     for key, text in (
         ("model_calls", "appels au modèle"),
         ("tool_calls", "appels d'outils"),
@@ -118,15 +124,17 @@ def main() -> None:
     args = parser.parse_args()
 
     run_one, file_stem = SYSTEMS[args.system]
-    records = run_all(list_scenario_ids(args.split), args.repeats, run_one)
-    title = f"{MODEL}, système {args.system}, scénarios {args.split}, {args.repeats} répétition(s)"
-    print_summary(records, title)
-
     RESULTS_DIR.mkdir(exist_ok=True)
     out = RESULTS_DIR / f"{file_stem}_{args.split}.json"
-    payload = {"model": MODEL, "system": args.system, "split": args.split,
-               "repeats": args.repeats, "records": records}
-    out.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
+
+    def save(records: list[dict]) -> None:
+        payload = {"model": MODEL, "system": args.system, "split": args.split,
+                   "repeats": args.repeats, "records": records}
+        out.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
+
+    records = run_all(list_scenario_ids(args.split), args.repeats, run_one, save)
+    title = f"{MODEL}, système {args.system}, scénarios {args.split}, {args.repeats} répétition(s)"
+    print_summary(records, title)
     print(f"\nDétail enregistré dans {out.relative_to(RESULTS_DIR.parent)}")
 
 
