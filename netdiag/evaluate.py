@@ -1,10 +1,11 @@
-"""Évaluation : l'agent trouve-t-il la bonne cause racine ?
+"""Évaluation : le système trouve-t-il la bonne cause racine ?
 
 C'est le seul module autorisé à lire la vérité terrain.
 
 Usage :
-    python -m netdiag.evaluate                  # scénarios de mise au point (dev)
-    python -m netdiag.evaluate --split test     # scénarios de notation, à lancer une seule fois
+    python -m netdiag.evaluate                          # agent seul, scénarios dev
+    python -m netdiag.evaluate --system team            # équipe multi-agents, scénarios dev
+    python -m netdiag.evaluate --system team --split test   # notation finale, une seule fois
 """
 
 import argparse
@@ -14,10 +15,19 @@ from collections import Counter
 from pathlib import Path
 
 from netdiag.agent import MODEL, diagnose
+from netdiag.team import diagnose_team
 from netdiag.scenarios import list_scenario_ids, load_ground_truth, load_scenario
 
 RESULTS_DIR = Path(__file__).resolve().parent.parent / "results"
 FIELDS = ("domain", "element", "fault")
+
+# Les systèmes comparés : un nom, la fonction qui diagnostique un scénario, le fichier de résultats.
+SYSTEMS = {
+    "single": (lambda scenario: diagnose(scenario), "single_agent_verbose"),
+    "single_coverage": (lambda scenario: diagnose(scenario, coverage=True), "single_agent_coverage"),
+    "single_brief": (lambda scenario: diagnose(scenario, brief=True), "single_agent_brief"),
+    "team": (lambda scenario: diagnose_team(scenario), "team"),
+}
 
 
 def score(predicted: dict | None, expected: dict) -> dict:
@@ -37,7 +47,7 @@ def label(diagnosis: dict | None) -> str:
     return " / ".join(diagnosis[f] for f in FIELDS)
 
 
-def run_all(scenario_ids: list[str], repeats: int, brief: bool) -> list[dict]:
+def run_all(scenario_ids: list[str], repeats: int, run_one) -> list[dict]:
     """Exécute chaque scénario 'repeats' fois et renvoie un enregistrement par exécution.
 
     On alterne les scénarios (SC01, SC02, SC03, SC01, ...) au lieu de répéter le même
@@ -48,7 +58,7 @@ def run_all(scenario_ids: list[str], repeats: int, brief: bool) -> list[dict]:
     for repeat in range(1, repeats + 1):
         for scenario_id in scenario_ids:
             start = time.perf_counter()
-            run = diagnose(load_scenario(scenario_id), brief=brief)
+            run = run_one(load_scenario(scenario_id))
             seconds = round(time.perf_counter() - start, 1)
             record = {
                 "scenario": scenario_id,
@@ -99,21 +109,21 @@ def print_summary(records: list[dict], title: str) -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Évalue l'agent seul sur tous les scénarios.")
+    parser = argparse.ArgumentParser(description="Évalue un système sur un jeu de scénarios.")
+    parser.add_argument("--system", choices=list(SYSTEMS), default="single")
     parser.add_argument("--repeats", type=int, default=1, help="exécutions par scénario")
-    parser.add_argument("--prompt", choices=["verbose", "brief"], default="verbose")
     parser.add_argument("--split", choices=["dev", "test", "all"], default="dev",
                         help="dev : mise au point ; test : notation finale")
     args = parser.parse_args()
 
-    scenario_ids = list_scenario_ids(args.split)
-    records = run_all(scenario_ids, args.repeats, brief=args.prompt == "brief")
-    title = f"{MODEL}, agent seul, prompt {args.prompt}, scénarios {args.split}, {args.repeats} répétition(s)"
+    run_one, file_stem = SYSTEMS[args.system]
+    records = run_all(list_scenario_ids(args.split), args.repeats, run_one)
+    title = f"{MODEL}, système {args.system}, scénarios {args.split}, {args.repeats} répétition(s)"
     print_summary(records, title)
 
     RESULTS_DIR.mkdir(exist_ok=True)
-    out = RESULTS_DIR / f"single_agent_{args.prompt}_{args.split}.json"
-    payload = {"model": MODEL, "prompt": args.prompt, "split": args.split,
+    out = RESULTS_DIR / f"{file_stem}_{args.split}.json"
+    payload = {"model": MODEL, "system": args.system, "split": args.split,
                "repeats": args.repeats, "records": records}
     out.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
     print(f"\nDétail enregistré dans {out.relative_to(RESULTS_DIR.parent)}")
